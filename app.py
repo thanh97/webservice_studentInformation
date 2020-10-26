@@ -2,13 +2,12 @@
 from flask import Flask, request, send_file, render_template, jsonify
 import cv2
 import numpy as np
-# import matplotlib.pyplot as plt
 
 import keras
 from keras.models import load_model
 from keras.utils.generic_utils import CustomObjectScope
 from urllib.request import urlopen
-import os.path
+
 app = Flask(__name__)
 
 
@@ -17,63 +16,63 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/prediction_iris', methods=['POST', 'GET'])
-def prediction_iris():
-    if request.method == 'POST':
-        loaded_model = load('Iris.DecisionTree.joblib')
-        classes = ["Setosa", "Versicolor", "Virginica"]
-        X_new = ([[request.form['sep_len'],
-                   request.form['sep_wid'],
-                   request.form['pet_len'],
-                   request.form['pet_wid']]])
-        y_new = loaded_model.predict(X_new)
-        return render_template('result.html', results=classes[y_new[0]])
+# #@app.route('/prediction_iris', methods=['POST', 'GET'])
+# #def prediction_iris():
+#     if request.method == 'POST':
+#         loaded_model = load('Iris.DecisionTree.joblib')
+#         classes = ["Setosa", "Versicolor", "Virginica"]
+#         X_new = ([[request.form['sep_len'],
+#                    request.form['sep_wid'],
+#                    request.form['pet_len'],
+#                    request.form['pet_wid']]])
+#         y_new = loaded_model.predict(X_new)
+#         return render_template('result.html', results=classes[y_new[0]])
 
 
-def url_to_image(url):
-    # download the image, convert it to a NumPy array, and then read
-    # it into OpenCV format
-    resp = urlopen(url)
-    image = np.asarray(bytearray(resp.read()), dtype="uint8")
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-    # return the image
-    return image
+# #def url_to_image(url):
+#     # download the image, convert it to a NumPy array, and then read
+#     # it into OpenCV format
+#     resp = urlopen(url)
+#     image = np.asarray(bytearray(resp.read()), dtype="uint8")
+#     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+#     # return the image
+#     return image
+#
+# #def url_to_image(url):
+#     # download the image, convert it to a NumPy array, and then read
+#     # it into OpenCV format
+#     resp = urlopen(url)
+#     image = np.asarray(bytearray(resp.read()), dtype="uint8")
+#     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+#     # return the image
+#     return image
 
-def url_to_image(url):
-    # download the image, convert it to a NumPy array, and then read
-    # it into OpenCV format
-    resp = urlopen(url)
-    image = np.asarray(bytearray(resp.read()), dtype="uint8")
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-    # return the image
-    return image
-
-@app.route('/getmsg/', methods=['GET'])
-def respond():
-    # Retrieve the name from url parameter
-    name = request.args.get("name", None)
-
-    # For debugging
-    print(f"got name {name}")
-
-    response = {}
-
-    # Check if user sent a name at all
-    if not name:
-        response["ERROR"] = "no name found, please send a name."
-    # Check if the user entered a number not a name
-    elif str(name).isdigit():
-        response["ERROR"] = "name can't be numeric."
-    # Now the user entered a valid name
-    else:
-        response["MESSAGE"] = f"Welcome {name} to our awesome platform!!"
-
-    # Return the response in json format
-    return jsonify(response)
+# @app.route('/getmsg/', methods=['GET'])
+# def respond():
+# # Retrieve the name from url parameter
+# name = request.args.get("name", None)
+#
+# # For debugging
+# print(f"got name {name}")
+#
+# response = {}
+#
+# # Check if user sent a name at all
+# if not name:
+#     response["ERROR"] = "no name found, please send a name."
+# # Check if the user entered a number not a name
+# elif str(name).isdigit():
+#     response["ERROR"] = "name can't be numeric."
+# # Now the user entered a valid name
+# else:
+#     response["MESSAGE"] = f"Welcome {name} to our awesome platform!!"
+#
+# # Return the response in json format
+# return jsonify(response)
 
 
 # xoay anh
-def Image_Alignment(file_chuan,img):
+def Image_Alignment(file_chuan, img):
     # Convert to grayscale.
     img1 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img2 = cv2.cvtColor(file_chuan, cv2.COLOR_BGR2GRAY)
@@ -115,6 +114,7 @@ def Image_Alignment(file_chuan,img):
 
     return (transformed_img)
 
+
 def row_line(im_th):
     # Copy the thresholded image.
     im_floodfill = im_th.copy()
@@ -130,7 +130,8 @@ def row_line(im_th):
     # Invert floodfilled image
     im_floodfill_inv = cv2.bitwise_not(im_floodfill)
     return im_floodfill_inv
-    
+
+
 @app.route('/data', methods=['POST'])
 def detect(transformed_img):
     # load model
@@ -241,7 +242,7 @@ def detect(transformed_img):
         tmp_sum.append(sum_index)
         map_name = ["Họ tên: ", "Số zalo: ", "Số điện thoai: ", "Tên hiển thị trên Facebook: ", "Email: ",
                     "Học sinh THPT lớp: ", "Sinh viên cao đẳng/đại học trường: ", "Khác: ", "Ngành_Khác: "]
-        
+
         for k in tmp_sum:
             # print(k)
             if (k < 10000):
@@ -372,18 +373,16 @@ def detect(transformed_img):
                         # # lấy phần tử có giá trị lớn nhất
                         predict_img = np.argmax(prediction, axis=-1)
                         tmp_ket_qua.append(names.get(predict_img[0]))
-                        
+
             else:
                 continue
-                
-        
-    
-    return (tmp_ket_qua)
-    
-@app.route('/data', methods=['GET'])  
-def write_img(tmp_ket_qua):
 
-    with open('data/text.txt',"w+",encoding='UTF-8') as f:
+    return (tmp_ket_qua)
+
+
+@app.route('/data', methods=['GET'])
+def write_img(tmp_ket_qua):
+    with open('data/text.txt', "w+", encoding='UTF-8') as f:
         couter = 1
         f.write("\r")
         f.write("anh: %s " % (str(couter)))
@@ -393,29 +392,30 @@ def write_img(tmp_ket_qua):
                 f.write("\r")
             else:
                 f.write("%s" % (str(i)))
-                    
+
             couter += 1
-    
+
     return 0
+
 
 # http://localhost:5000/prediction?url=http://trolyao.cusc.vn/image/m.jpg
 
 
-# @app.route('/prediction')
-@app.route('/prediction', methods=['GET'])
-def predition():
-    # url = 'http://trolyao.cusc.vn/image/m.jpg'
-    url = ''
-    if request.method == 'GET':
-        url = request.args.get("url", None)
-
-    # img = cv2.imread('1.jpg', cv2.IMREAD_COLOR) # đọc ảnh
-    # img = url_to_image("http://trolyao.cusc.vn/image/m.jpg");
-    # img = url_to_image("http://trolyao.cusc.vn/image/i.jpg");
-    # img = url_to_image("http://trolyao.cusc.vn/image/g.jpg");
-    img = url_to_image(url);
-
-    return jsonify(detect(img))
+# # @app.route('/prediction')
+# @app.route('/prediction', methods=['GET'])
+# def predition():
+#     # url = 'http://trolyao.cusc.vn/image/m.jpg'
+#     url = ''
+#     if request.method == 'GET':
+#         url = request.args.get("url", None)
+#
+#     # img = cv2.imread('1.jpg', cv2.IMREAD_COLOR) # đọc ảnh
+#     # img = url_to_image("http://trolyao.cusc.vn/image/m.jpg");
+#     # img = url_to_image("http://trolyao.cusc.vn/image/i.jpg");
+#     # img = url_to_image("http://trolyao.cusc.vn/image/g.jpg");
+#     img = url_to_image(url);
+#
+#     return jsonify(detect(img))
 
 
 # return jsonify(keras.__version__)
@@ -431,16 +431,17 @@ def upload_file():
     # Read image
     img = cv2.imdecode(np.fromstring(file.read(), np.uint8), 1)
     file_chuan = cv2.imdecode(np.fromstring(file_chuan.read(), np.uint8), 1)
-    return render_template('result.html', results=detect(Image_Alignment(file_chuan,img)))
+    return render_template('result.html', results=detect(Image_Alignment(file_chuan, img)))
+
 
 @app.route('/download')
 def download_file():
-	path = "data/text.txt"
- 
-	return send_file(path, as_attachment=True,conditional=True)
+    path = "data/text.txt"
+
+    return send_file(path, as_attachment=True, conditional=True)
+
 
 if __name__ == '__main__':
-
-    #app.run(debug=True, host="0.0.0.0", port='5000')
-    app.run(threaded=False)
-    #print(predition(img))
+    # app.run(debug=True, host="0.0.0.0", port='8050')
+    app.run(debug=True)
+    # print(predition(img))
