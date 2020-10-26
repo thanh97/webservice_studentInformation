@@ -1,6 +1,7 @@
+click==7.1.2
 Flask==1.1.2
 gunicorn==20.0.4
-keras==2.2.5
-numpy==1.16.5
-opencv-python==4.1.0.25
-tensorflow==1.14.0
+itsdangerous==1.1.0
+Jinja2==2.11.2
+MarkupSafe==1.1.1
+Werkzeug==1.0.1
