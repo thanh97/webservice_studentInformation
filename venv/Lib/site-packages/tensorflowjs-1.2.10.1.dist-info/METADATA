@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: tensorflowjs
+Version: 1.2.10.1
+Summary: Python Libraries and Tools for TensorFlow.js
+Home-page: https://js.tensorflow.org/
+Author: Google LLC
+Author-email: opensource@google.com
+License: Apache 2.0
+Keywords: tensorflow javascript machine deep learning converter
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: JavaScript
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: h5py (==2.8.0)
+Requires-Dist: numpy (==1.16.4)
+Requires-Dist: six (==1.11.0)
+Requires-Dist: tensorflow (==1.14.0)
+Requires-Dist: tensorflow-hub (==0.5.0)
+Requires-Dist: gast (==0.2.2)
+Requires-Dist: PyInquirer (==1.0.3)
+
+UNKNOWN
+
+
