@@ -1,50 +1,215 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Vietnamese Handwritten Character Recognition Services</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Website nhận dạng phiếu thông tin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/linearicons/style.css') }}">
 </head>
 
-<body>
-
-
-<h1>Welcome to Vietnamese Handwritten Character Recognition Services - Beta version.</h1>
-
-<h3>Please contact with us if you would like to use API (ltdao@ctu.edu.vn)</h3>
-
-
-<form action="/upload" method="post" enctype="multipart/form-data" >
-        <div align="center">
-            <label class="btn btn-default btn-file_chuan">
-			Browse_chuan <input type="file" name="image_chuan" style="display: none;">
-			</label>
-			<div align="center">
-			<label class="btn btn-default btn-file">
-                Browse <input type="file" name="image" style="display: none;">
-            </label>
-			<div align="center">
-            <input type="submit" value="Upload your image" class="btn btn-primary">
-			
+<body id="nhap_tu_dong" style="padding-bottom: -100px">
+<div class="container" style="background-color: #87CEFA; padding-top: 50px " >
+    <div class="text-center" style="padding-top: 50px">
+        <h3>Chào mừng bạn đến với Website trích xuất phiếu thông tin</h3>
+            <h3>học viên - Phiên bản thử nghiệm</h3>
         </div>
-		
-    </form>
+    </div>
+<div class="wrapper" style="background-color: #FFFFFF; padding-top: 0px ">
+    <div class="inner">
+        <img src="./source/images/image-1.png" alt="" class="image-1">
+        <form action="/upload" method="post" enctype="multipart/form-data" style="background-color: #F0FFFF">
+
+            <div class="form-holder">
+                <label>Chọn phiếu thông tin</label>
+                <span class="lnr lnr-upload"></span>
+                <input type="file" class="form-control" name="image" multiple="">
+            </div>
+            <div class="form-holder">
+                <label for="Ten_sv">ID mùa*</label>
+                <input type="hidden" name="ma_mua" value="{{ data_mua.id }}">
+                <span class="lnr lnr-sun"></span>
+                <input type="text" class="form-control" id="nam_nhap" name="nam_nhap" value="{{ data_mua.id }}"
+                       disabled>
+            </div>
+
+            <div class="form-holder">
+                <label for="Ten_sv">Mã nhân viên*</label>
+                <input type="hidden" id="ma_nv" name="ma_nv" value="">
+                <span class="lnr lnr-tag"></span>
+                <input type="text" class="form-control" id="Ma_nv_nhap" name="Ma_nv_nhap" value="" disabled>
+            </div>
+
+            <div class="form-holder">
+                <label for="Ten_sv">Tên nhân viên</label>
+                <span class="lnr lnr-user"></span>
+                <input type="text" class="form-control" id="Ten_nhan_vien" name="Ten_nhan_vien" value="" disabled>
+            </div>
+
+            <label>Tỉnh/Thành</label>
+            <div class="form-holder">
+                <select style="width: 280px" class="Tinh_TP" data-type="Tinh" name="Tinh_TP" id="Tinh_TP"
+                        class="form-control">
+                    {% for i in range(0, len) %}
+                        <option value="{{ data[i].id }}"> {{ data[i].Ten_tinh }}</option>;
+                    {% endfor %}
+                </select>
+            </div>
+
+            <span>Quận/Huyện</span>
+            <div class="form-holder">
+                <select style="width: 280px" class="Quan_huyen" data-type="Quan" name="Quan_huyen"
+                        id="Quan_huyen" class="form-control">
+                    <option value="4">--Quận/Huyện--</option>
+                </select>
+            </div>
+
+            <span>Chọn trường</span>
+            <select style="width: 280px" class="Truong_hoc" data-type="Truong" name="Truong_hoc"
+                    id="Truong_hoc" class="form-control">
+                <option value="5">--THPT/Đại học--</option>
+            </select>
+
+            <button type="submit">
+                <span>Trích xuất thông tin</span>
+            </button>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    {#url = new URL(url);#}
+                    {#new URL(location.href).searchParams.get('manv');#}
+                    {#var c = url.searchParams.get("manv");#}
+                    {#console.log(c);#}
 
 
-<!--
-<h2>Please enter your flower measurements below:</h2>
-<form action = "/prediction" method="POST">
-<form  method="POST">
-    <label for="sep_len">Sepal Length</label> <input id="sep_len" name="sep_len" type="text" value="">
-    <br>
-    <label for="sep_wid">Sepal Width</label> <input id="sep_wid" name="sep_wid" type="text" value="">
-    <br>
-    <label for="pet_len">Petal Length</label><input id="pet_len" name="pet_len" type="text" value="">
-    <br>
-    <label for="pet_wid">Petal Width</label><input id="pet_wid" name="pet_wid" type="text" value="">
-    <br>
-    <input id="submit" name="submit" type="submit" value="Analyze">
-</form>
--->
+                    document.getElementById("Ma_nv_nhap").innerHTML = String(new URL(location.href).searchParams.get('manv'));
+                    $("#Ma_nv_nhap").val(String(new URL(location.href).searchParams.get('manv')));
+
+                    document.getElementById("ma_nv").innerHTML = String(new URL(location.href).searchParams.get('manv'));
+                    $("#ma_nv").val(String(new URL(location.href).searchParams.get('manv')));
+
+                });
+            </script>
+
+            <img class="image-2" src="{{ url_for('static', filename="images/image-2.png") }}" alt="" >
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    var cat_id = $('.Tinh_TP').val();
+                    loadQH(cat_id);
+
+                    $(document).on('change', '.Tinh_TP', function () {
+                        console.log("hmm its change");
+
+                        var cat_id = $(this).val();
+                        console.log(cat_id);
+                        var div = $(this).parent();
+
+                        var op = " ";
+                        loadQH(cat_id)
+
+                    });
+
+                    function loadQH(cat_id) {
+                        var op = " ";
+                        $.ajax({
+                            type: 'get',
+                            url: 'http://localhost/php_framework/public/api/get_Tp_quan_huyen',
+                            data: {'id': cat_id},
+                            success: function (data) {
+                                // console.log('success');
+                                console.log(data);
+                                console.log(data.length);
+                                op += '<option value="4" selected>--Quận/Huyện--</option>';
+                                for (var i = 0; i < data.length; i++) {
+                                    op += '<option value="' + data[i].id + '">' + data[i].Ten_thanhpho + '</option>';
+                                }
+                                $('.Quan_huyen').html(" ");
+                                $('.Quan_huyen').append(op);
+                            },
+                            error: function () {
+                                console.log('errro')
+                            }
+                        });
+                    }
+
+                    $(document).on('change', '.Quan_huyen', function () {
+                        var prod_id = $(this).val();
+
+                        console.log(prod_id);
+                        var op_truong = " ";
+
+                        $.ajax({
+                            type: 'get',
+                            url: 'http://localhost/php_framework/public/api/get_truong',
+                            data: {'id': prod_id},
+                            success: function (data) {
+                                // console.log('success');
+                                // console.log(data);
+                                // console.log(data.length);
+
+                                op_truong += '<option value="5" selected>--THPT/Đại học--</option>';
+                                for (var i = 0; i < data.length; i++) {
+                                    op_truong += '<option value="' + data[i].id + '">' + data[i].Ten_truong + '</option>';
+                                }
+                                $('.Truong_hoc').html(" ");
+                                $('.Truong_hoc').append(op_truong);
+                            }
+                            ,
+                            error: function () {
+                                console.log('errro')
+                            }
+                        });
+
+                    });
+
+
+                });
+            </script>
+
+
+            <script type="text/javascript">
+                $(document).ready(function () {
+
+                    var prod_id = $("#ma_nv").val();
+
+                    var op_ten = " ";
+                    $.ajax({
+                        type: 'get',
+                        url: 'http://localhost/php_framework/public/api/get_api_nhan_vien',
+                        data: {'id': prod_id},
+                        success: function (data) {
+                            // console.log('success');
+                            {#console.log(data);#}
+                            // console.log(data.length);
+
+                            for (var i = 0; i < data.length; i++) {
+                                op_ten += data[i].full_name;
+                                document.getElementById("Ten_nhan_vien").innerHTML = String(op_ten);
+                                $("#Ten_nhan_vien").val(op_ten);
+                            }
+                        }
+                        ,
+                        error: function () {
+                            console.log('errro')
+                        }
+                    });
+
+
+                });
+            </script>
+
+            <script href="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+            <script href="{{ url_for('static', filename='js/main.js') }}"></script>
+
+        </form>
+    </div>
+</div>
 </body>
+
+
 </html>
